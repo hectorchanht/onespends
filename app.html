@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OneSpends App — 一眼睇晒你嘅使費</title>
+<meta name="description" content="OneSpends App：本月總額、分類、最近 7 日，一眼睇晒。影收據 OCR 入數，資料先存喺你部裝置，可登入同步去你嘅帳戶。">
+<link rel="canonical" href="https://onespends.dawnstudio.app/app">
+<meta name="theme-color" content="#14532d">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./styles.css?v=23">
+<link rel="stylesheet" href="./vendor/driver.css?v=23">
+<link rel="stylesheet" href="./app.css?v=24">
+</head>
+<body class="app-page">
+<script>
+// Boot watchdog — deliberately dependency-free classic script. The app
+// itself is an ES module graph; if anything in that graph fails to load
+// or evaluate on a given device (a poisoned cache entry, a browser quirk
+// in an optional layer), the page would otherwise sit there looking
+// "loaded" but dead, with the failure invisible. This watchdog listens
+// for the first error, waits for js/app.js to raise its boot beacon
+// (window.__onespendsBooted at the end of init), and if the beacon never
+// comes, offers a one-tap recovery: unregister service workers, delete
+// every Cache Storage entry, reload. The captured error is shown in the
+// banner so a screenshot of it is diagnosable. It never fires on a
+// healthy boot.
+(function () {
+  window.__osFirstError = "";
+  function note(kind, msg) {
+    if (!window.__osFirstError && msg) window.__osFirstError = kind + ": " + msg;
+  }
+  window.addEventListener("error", function (e) {
+    note("error", e.message || (e.target && (e.target.src || e.target.href)) || e.type || "");
+  }, true);
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e.reason;
+    note("promise", (r && r.message) || String(r || ""));
+  });
+  setTimeout(function () {
+    if (window.__onespendsBooted) return;
+    var box = document.getElementById("bootWatchdog");
+    if (!box) return;
+    var errEl = document.getElementById("bootWatchdogErr");
+    if (errEl && window.__osFirstError) errEl.textContent = window.__osFirstError;
+    box.hidden = false;
+    var btn = document.getElementById("bootWatchdogBtn");
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", function () {
+      btn.disabled = true;
+      btn.textContent = "清除緊…";
+      var jobs = [];
+      if ("serviceWorker" in navigator) {
+        jobs.push(navigator.serviceWorker.getRegistrations()
+          .then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); })
+          .catch(function () {}));
+      }
+      if (window.caches) {
+        jobs.push(caches.keys()
+          .then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); })
+          .catch(function () {}));
+      }
+      Promise.all(jobs).then(function () { location.reload(); }, function () { location.reload(); });
+    });
+  }, 4000);
+})();
+</script>
+<header class="app-bar">
+  <a class="brand" href="./" title="OneSpends 主頁">
+    <img src="./icons/icon-192.png" alt="" width="32" height="32">
+    <span>OneSpends</span>
+  </a>
+  <span id="demoBadge" class="demo-badge" hidden>DEMO</span>
+  <span id="previewBadge" class="demo-badge preview-badge" hidden>示範數據</span>
+  <div class="month-nav">
+    <button type="button" class="month-pill" id="monthButton" aria-haspopup="dialog" aria-expanded="false" aria-controls="monthPickerPanel" title="揀月份">
+      <span id="monthLabel">本月</span><span class="month-chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="month-picker" id="monthPickerPanel" role="dialog" aria-label="揀月份" hidden>
+      <div class="month-picker-head">
+        <button type="button" class="icon-btn" id="prevMonth" aria-label="上個月">‹</button>
+        <strong id="monthPickerTitle">本月</strong>
+        <button type="button" class="icon-btn" id="nextMonth" aria-label="下個月">›</button>
+      </div>
+      <label class="month-picker-field">月份
+        <input type="month" id="monthPicker" aria-label="月份">
+      </label>
+      <div class="month-picker-actions">
+        <button type="button" class="btn ghost" id="thisMonthBtn">今月</button>
+        <button type="button" class="btn primary" id="monthDoneBtn">完成</button>
+      </div>
+    </div>
+  </div>
+  <nav class="action-dock" id="actionDock" aria-label="動作">
+    <button type="button" class="icon-btn round" id="addBtn" title="加一筆" aria-label="＋ 加一筆"><span aria-hidden="true">＋</span></button>
+    <button type="button" class="icon-btn round" id="csvImportButton" title="匯入" aria-label="⬆ 匯入檔案"><span aria-hidden="true">⬆</span></button>
+    <button type="button" class="icon-btn round" id="exportBtn" title="匯出 CSV" aria-label="⬇ 匯出 CSV"><span aria-hidden="true">⬇</span></button>
+    <button type="button" id="scanButton" class="scan-fab" title="掃收據" aria-label="📷 掃收據入數">📷</button>
+    <input type="file" id="receiptFile" accept="image/*" capture="environment" hidden>
+  </nav>
+  <button type="button" class="icon-btn tour-btn" data-tour-start title="Take the tour" aria-label="導覽 · Take the tour">？<span class="tour-btn-label">導覽</span></button>
+  <button type="button" class="icon-btn account-btn" id="accountBtn" title="帳戶" aria-label="👤 帳戶">👤<span class="tour-btn-label" id="accountBtnLabel">登入</span></button>
+  <button type="button" class="icon-btn settings-btn" id="settingsBtn" title="設定" aria-label="⚙ 設定">⚙<span class="tour-btn-label">設定</span></button>
+</header>
+
+<div id="trialBanner" class="trial-banner" hidden>☁️ 雲端同步嘅免費試用已完，同步已暫停。你嘅記錄仍然安全存喺呢部裝置，唔受影響。</div>
+
+<main class="app-main">
+  <section id="dashboardSection" class="dashboard" aria-label="本月使費">
+    <div id="glanceCards" class="glance-cards" aria-live="polite"></div>
+
+    <div class="glance-grid" id="chartsGrid">
+      <section class="panel" id="donutPanel" aria-labelledby="donutTitle">
+        <div class="panel-head"><h2 id="donutTitle">分類</h2><span class="ccy-tag" id="donutCcy"></span></div>
+        <div class="donut-wrap">
+          <div id="donut" class="donut"></div>
+          <ul id="donutLegend" class="legend"></ul>
+        </div>
+        <p class="panel-hint" id="donutHint" hidden>加第一筆之後，呢度會出分類圖。</p>
+      </section>
+
+      <section class="panel" id="barsPanel" aria-labelledby="barsTitle">
+        <div class="panel-head"><h2 id="barsTitle">最近 7 日</h2><span class="ccy-tag" id="barsCcy"></span></div>
+        <div id="bars" class="bars"></div>
+      </section>
+    </div>
+
+    <section class="panel stats-section" id="statsSection" aria-labelledby="statsTitle">
+      <div class="panel-head"><h2 id="statsTitle">統計</h2><span class="ccy-tag" id="statsCcy"></span></div>
+
+      <div class="stats-controls">
+        <div class="range-chips" role="group" aria-label="統計範圍">
+          <button type="button" class="range-chip" data-range-preset="month">本月</button>
+          <button type="button" class="range-chip" data-range-preset="prevMonth">上月</button>
+          <button type="button" class="range-chip" data-range-preset="7d">近 7 日</button>
+          <button type="button" class="range-chip" data-range-preset="30d">近 30 日</button>
+          <button type="button" class="range-chip" data-range-preset="3m">近 3 個月</button>
+          <button type="button" class="range-chip" data-range-preset="year">今年</button>
+          <button type="button" class="range-chip" data-range-preset="custom">自訂</button>
+        </div>
+        <div class="custom-range" id="statsCustomRange" hidden>
+          <label>開始 <input type="date" id="statsStart"></label>
+          <label>結束 <input type="date" id="statsEnd"></label>
+        </div>
+        <p class="hint stats-range-hint" id="statsRangeHint"></p>
+        <div class="range-chips currency-chips" id="statsCurrencyChips" role="group" aria-label="統計貨幣" hidden></div>
+      </div>
+
+      <div class="stats-strip" id="statsStrip" aria-live="polite"></div>
+
+      <div class="stats-grid">
+        <div class="stats-block">
+          <h3>趨勢</h3>
+          <div id="trendChartWrap" class="chart-wrap"></div>
+        </div>
+        <div class="stats-block">
+          <h3>分類排行</h3>
+          <div id="categoryRankWrap" class="chart-wrap"></div>
+        </div>
+        <div class="stats-block">
+          <h3>Top 商戶</h3>
+          <ul id="topVendors" class="vendor-list"></ul>
+        </div>
+        <div class="stats-block">
+          <h3>星期分布</h3>
+          <div id="weekdayChartWrap" class="chart-wrap"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="panel" id="recentPanel" aria-labelledby="recentTitle">
+    <div class="panel-head"><h2 id="recentTitle">最近</h2><button type="button" class="link-btn" id="moreRecent" hidden></button></div>
+    <ul id="recentList" class="recent-list"></ul>
+  </section>
+</main>
+
+
+<div class="toast-zone">
+  <div id="ocrProgress" class="progress toast" hidden>
+    <span aria-hidden="true">📷</span>
+    <div class="progress-track"><div class="progress-fill" id="ocrBar"></div></div>
+    <span id="ocrPct"></span>
+  </div>
+  <p id="status" class="status toast" role="status" aria-live="polite" hidden></p>
+</div>
+
+<div id="bootWatchdog" hidden role="alert" style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:200;background:#7f1d1d;color:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.45);font-weight:600;">
+  <p style="margin:0 0 6px;">App 載入唔完整 — 可能係部機留住咗舊版檔案。</p>
+  <p id="bootWatchdogErr" style="margin:0 0 10px;font-size:.78rem;font-weight:500;opacity:.85;word-break:break-all;"></p>
+  <button type="button" id="bootWatchdogBtn" style="background:#fff;color:#7f1d1d;border:0;border-radius:10px;padding:10px 14px;font-weight:800;font-size:.95rem;">清除快取並重新載入</button>
+</div>
+
+<dialog id="spendDialog" class="sheet" aria-labelledby="formTitle">
+  <section id="addSpendSection">
+    <div class="sheet-head">
+      <h2 id="formTitle">＋ 加一筆</h2>
+      <button type="button" class="icon-btn" data-close aria-label="關閉">✕</button>
+    </div>
+    <p id="cancelledBanner" class="cancelled-banner" hidden>⚠️ 此收據已取消 — 金額唔會自動填入。如果真係要記錄呢筆，請自己輸入金額。</p>
+    <form id="spendForm">
+      <div class="grid">
+        <label>商戶
+          <input type="text" id="vendor" required maxlength="60" placeholder="例如：大家樂" autocomplete="off">
+        </label>
+        <label>金額
+          <input type="number" id="amount" required min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+        </label>
+        <label>貨幣
+          <select id="currency">
+            <option value="HKD">HKD 港幣</option>
+            <option value="USD">USD 美金</option>
+            <option value="CAD">CAD 加幣</option>
+            <option value="TWD">TWD 台幣</option>
+            <option value="CNY">CNY 人民幣</option>
+            <option value="JPY">JPY 日圓</option>
+            <option value="GBP">GBP 英鎊</option>
+            <option value="EUR">EUR 歐元</option>
+          </select>
+        </label>
+        <label>日期
+          <input type="date" id="date" required>
+          <span class="hint" id="dateHint" hidden>⚠️ 未能辨識日期 — 請揀返收據上嘅日期。</span>
+        </label>
+        <label>分類
+          <select id="category"></select>
+        </label>
+        <label>備註
+          <input type="text" id="note" maxlength="80" placeholder="可選">
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn primary" id="submitBtn">儲存</button>
+        <button type="button" class="btn ghost" id="cancelEdit" hidden>取消</button>
+        <button type="button" class="btn ghost danger" id="deleteBtn" hidden>🗑 刪除</button>
+      </div>
+    </form>
+    <div class="pp-retry" id="ppRetryWrap" hidden>
+      <button type="button" class="btn ghost" id="ppRetryBtn">🔍 用 PP-OCRv5 重試<span id="ppRetryCost">（下載約 34 MB）</span></button>
+      <p class="hint">頭先嘅辨識搵唔到金額或日期 — PP-OCRv5 對繁體收據更準。</p>
+    </div>
+  </section>
+</dialog>
+
+<dialog id="importDialog" class="sheet" aria-labelledby="importTitle">
+  <div class="sheet-head">
+    <h2 id="importTitle">⬆ 匯入</h2>
+    <button type="button" class="icon-btn" data-close aria-label="關閉">✕</button>
+  </div>
+  <div class="import-body">
+    <label class="field">匯入貨幣
+      <select id="importCurrency">
+        <option value="auto" selected>自動</option>
+        <option value="JPY">JPY 日圓</option>
+        <option value="HKD">HKD 港幣</option>
+        <option value="TWD">TWD 台幣</option>
+        <option value="USD">USD 美金</option>
+        <option value="CAD">CAD 加幣</option>
+        <option value="CNY">CNY 人民幣</option>
+      </select>
+    </label>
+    <span class="hint">CSV · JSON · HTML</span>
+    <label class="btn primary file-pick" for="csvFile" role="button" tabindex="0">揀檔案</label>
+    <input type="file" id="csvFile" accept=".csv,.json,.html,.htm,text/csv,application/json,text/html" hidden>
+    <a class="hint" href="./guides">匯入教學 ↗</a>
+  </div>
+</dialog>
+
+<dialog id="accountDialog" class="sheet" aria-labelledby="accountTitle">
+  <div class="sheet-head">
+    <h2 id="accountTitle">👤 帳戶</h2>
+    <button type="button" class="icon-btn" data-close aria-label="關閉">✕</button>
+  </div>
+  <div class="settings-body">
+    <div id="accountSignedOut">
+      <p class="hint">登入之後，你嘅記錄會同步去你嘅帳戶，換機都唔使驚。唔登入都得 — 記錄一直只存喺呢部裝置。</p>
+      <label class="field">電郵
+        <input type="email" id="accountEmail" autocomplete="email" inputmode="email" placeholder="you@example.com">
+      </label>
+      <div class="form-actions">
+        <button type="button" class="btn primary" id="requestLinkBtn">寄登入連結俾我</button>
+      </div>
+      <div id="codeWrap" hidden>
+        <label class="field">6 位驗證碼
+          <input type="text" id="accountCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="------">
+        </label>
+        <div class="form-actions">
+          <button type="button" class="btn primary" id="verifyCodeBtn">用驗證碼登入</button>
+        </div>
+      </div>
+      <p class="hint" id="accountMsg" role="status" aria-live="polite"></p>
+    </div>
+    <div id="accountSignedIn" hidden>
+      <p class="account-line">帳戶：<b id="accountEmailText"></b></p>
+      <p class="account-line" id="accountPlanText"></p>
+      <p class="account-line">同步狀態：<span id="syncStatusText"></span></p>
+      <div class="form-actions">
+        <button type="button" class="btn primary" id="syncNowBtn">立即同步</button>
+        <button type="button" class="btn ghost" id="logoutBtn">登出</button>
+      </div>
+      <p class="hint">登出唔會刪走呢部裝置上面嘅記錄 — 只係停咗雲端同步。</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="settingsDialog" class="sheet" aria-labelledby="settingsTitle">
+  <div class="sheet-head">
+    <h2 id="settingsTitle">⚙ 設定</h2>
+    <button type="button" class="icon-btn" data-close aria-label="關閉">✕</button>
+  </div>
+  <div class="settings-body">
+    <fieldset class="settings-group">
+      <legend>辨識引擎</legend>
+      <div class="opt-list" role="radiogroup" aria-label="辨識引擎">
+        <label class="opt-row">
+          <input type="radio" name="ocrEngine" value="auto">
+          <span class="opt-main">自動<small>有 Chrome 文字偵測就用佢，否則用 Tesseract</small></span>
+        </label>
+        <label class="opt-row" id="engineRowTextdetector">
+          <input type="radio" name="ocrEngine" value="textdetector" id="engineInputTextdetector">
+          <span class="opt-main">Chrome 文字偵測<small id="textdetectorNote">裝置內置偵測，即時又唔使下載</small></span>
+        </label>
+        <label class="opt-row">
+          <input type="radio" name="ocrEngine" value="tesseract">
+          <span class="opt-main">Tesseract<small>離線 OCR 引擎，第一次用要下載字庫</small></span>
+        </label>
+        <label class="opt-row">
+          <input type="radio" name="ocrEngine" value="ppocr" id="engineInputPpocr">
+          <span class="opt-main">PP-OCRv5<small id="ppocrNote">繁體收據最準，第一次用要下載約 34 MB，之後離線可用</small></span>
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="settings-group">
+      <legend>Tesseract 字庫</legend>
+      <div class="opt-list" role="radiogroup" aria-label="Tesseract 字庫">
+        <label class="opt-row">
+          <input type="radio" name="ocrQuality" value="best">
+          <span class="opt-main">最佳<small id="qualityBestNote">（約 29 MB）</small></span>
+        </label>
+        <label class="opt-row">
+          <input type="radio" name="ocrQuality" value="fast">
+          <span class="opt-main">快速<small id="qualityFastNote">（約 8 MB）</small></span>
+        </label>
+      </div>
+      <p class="hint">字庫只會喺第一次用 Tesseract 掃描嗰陣下載，之後離線可用；用 Chrome 文字偵測就完全唔使下載。</p>
+    </fieldset>
+  </div>
+</dialog>
+
+<script type="module" src="./js/app.js?v=24"></script>
+<script defer src="./vendor/driver.js?v=23"></script>
+<script defer src="./js/tour.js?v=24"></script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "817449396b37448986f55bee8a07929f"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

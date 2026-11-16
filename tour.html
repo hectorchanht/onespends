@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OneSpends — All your spends in one place — just need a glance. | 產品導覽</title>
+<meta name="description" content="OneSpends — All your spends in one place — just need a glance. 五步睇晒點樣一眼睇清每月使費、影收據入數、手動加數、匯入 statement，同匯出備份。">
+<link rel="canonical" href="https://onespends.dawnstudio.app/tour">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OneSpends">
+<meta property="og:title" content="OneSpends — All your spends in one place — just need a glance.">
+<meta property="og:description" content="All your spends in one place — just need a glance. 跟住五個步驟，認識 OneSpends 的 dashboard、收據 OCR、CSV 匯入匯出同裝置私隱。">
+<meta property="og:url" content="https://onespends.dawnstudio.app/tour">
+<meta property="og:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OneSpends — All your spends in one place — just need a glance.">
+<meta name="twitter:description" content="All your spends in one place — just need a glance. 五步認識 OneSpends。">
+<meta name="twitter:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="theme-color" content="#14532d">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./styles.css?v=23">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./">
+    <img src="./icons/icon-192.png" alt="" width="32" height="32">
+    <span>OneSpends</span>
+  </a>
+  <nav>
+    <a href="./">主頁</a>
+    <a href="./tour" aria-current="page">產品導覽</a>
+    <a href="./guides">匯入教學</a>
+    <a href="./value">你得到啲乜</a>
+    <a href="./app" class="nav-app">開 App</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero tour-hero">
+    <p class="eyebrow">OneSpends 產品導覽</p>
+    <h1 lang="en">All your spends in one place — just need a glance.</h1>
+    <p>由記錄一筆使費，到一眼睇清成個月使咗去邊，OneSpends 只需要五步。下面每一格都係產品功能的簡化示意。</p>
+  </section>
+
+  <ol class="tour-steps">
+    <li class="tour-step card">
+      <div class="tour-copy">
+        <span class="step-number">01</span>
+        <h2>一眼睇晒</h2>
+        <p>Dashboard 按貨幣分開列出本月總額，每隻貨幣獨立同上月比較；下面再按分類拆開，餐飲、交通、購物等使費一目了然。不同貨幣不會溝埋做一個總數。</p>
+      </div>
+      <div class="mock mock-dashboard" aria-hidden="true">
+        <div class="mock-window-bar"><span></span><span></span><span></span></div>
+        <div class="mock-total-grid">
+          <div><small>HKD · 本月</small><strong>HK$ 4,280</strong><em>比上月 ▼ 6%</em></div>
+          <div><small>USD · 本月</small><strong>US$ 326</strong><em>比上月 ▲ 3%</em></div>
+        </div>
+        <div class="mock-bars">
+          <p><span>餐飲</span><i style="width:78%"></i></p>
+          <p><span>交通</span><i style="width:42%"></i></p>
+          <p><span>購物</span><i style="width:61%"></i></p>
+        </div>
+      </div>
+    </li>
+
+    <li class="tour-step card">
+      <div class="tour-copy">
+        <span class="step-number">02</span>
+        <h2>影一張相</h2>
+        <p>影低或上載收據，OCR 會喺你部裝置辨識繁體中文同英文，嘗試讀出商戶、金額、日期同貨幣。結果只會預填表格，等你核對同改好先儲存，永遠不會自動入數。</p>
+      </div>
+      <div class="mock mock-scan" aria-hidden="true">
+        <div class="scan-frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <div class="receipt">
+            <strong>商店名稱</strong>
+            <span>日期　2026-10-25</span>
+            <span>項目　　　　58.00</span>
+            <span>項目　　　　12.00</span>
+            <b>總計　HK$70.00</b>
+          </div>
+        </div>
+        <p class="mock-caption">OCR：chi_tra + eng · 本機處理</p>
+      </div>
+    </li>
+
+    <li class="tour-step card">
+      <div class="tour-copy">
+        <span class="step-number">03</span>
+        <h2>手動加數</h2>
+        <p>冇收據、現金付款，或者只想快快記低，都可以直接輸入商戶、金額、貨幣、日期、分類同備註。幾秒完成一筆，之後仲可以編輯或刪除。</p>
+      </div>
+      <div class="mock mock-form" aria-hidden="true">
+        <label>商戶<input value="咖啡店" readonly tabindex="-1"></label>
+        <div><label>金額<input value="48.00" readonly tabindex="-1"></label><label>貨幣<input value="HKD" readonly tabindex="-1"></label></div>
+        <label>日期<input value="2026-10-25" readonly tabindex="-1"></label>
+        <span class="mock-button">儲存</span>
+      </div>
+    </li>
+
+    <li class="tour-step card">
+      <div class="tour-copy">
+        <span class="step-number">04</span>
+        <h2>匯入 statement</h2>
+        <p>將銀行或付款 app 匯出的 CSV 帶入 OneSpends。系統會自動偵測日期、商戶、金額、貨幣同分類欄位，再按日期、金額同商戶跳過重複記錄，匯入後會報告新增同跳過數量。</p>
+        <p>購物平台（例如 Buyee、Jauce）嘅訂單記錄都匯入到 — 冇 CSV 就存成 HTML 一樣得。逐步教學睇 <a href="./guides">匯入教學</a>。</p>
+      </div>
+      <div class="mock mock-csv" aria-hidden="true">
+        <div class="csv-row csv-head"><span>日期</span><span>商戶</span><span>金額</span><span>貨幣</span></div>
+        <div class="csv-row"><span>2026-10-24</span><span>大家樂</span><span>70.00</span><span>HKD</span></div>
+        <div class="csv-row"><span>2026-10-23</span><span>港鐵</span><span>12.50</span><span>HKD</span></div>
+        <div class="csv-row muted-row"><span>2026-10-24</span><span>大家樂</span><span>70.00</span><span>重複</span></div>
+        <p class="mock-caption">自動認欄位 · 重複記錄會跳過</p>
+      </div>
+    </li>
+
+    <li class="tour-step card">
+      <div class="tour-copy">
+        <span class="step-number">05</span>
+        <h2>匯出同私隱</h2>
+        <p>全部記錄可以隨時匯出成 CSV，方便備份或用其他工具打開。唔需要帳戶都用得，使費記錄預設只存喺你正在使用的裝置；你主動登入開咗雲端同步，先會上傳去你嘅帳戶。</p>
+      </div>
+      <div class="mock mock-privacy" aria-hidden="true">
+        <div class="device-card">
+          <span class="device-icon">▣</span>
+          <strong>只在這部裝置</strong>
+          <small>IndexedDB 本機儲存</small>
+        </div>
+        <div class="export-chip"><span>⬇</span><div><strong>onespends-export.csv</strong><small>日期 · 商戶 · 金額 · 貨幣 · 分類</small></div></div>
+        <p class="mock-caption">冇帳戶 · 冇 server 保存你的記錄</p>
+      </div>
+    </li>
+  </ol>
+
+  <section class="tour-cta card">
+    <h2>而家開始記錄第一筆</h2>
+    <p>先影一張收據，或者手動加入一筆；之後回到 dashboard，一眼就睇到結果。</p>
+    <a class="btn primary" href="./app">開始使用</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><strong>OneSpends</strong> by <a href="https://dawnstudio.app">Dawn Studio</a> · <a href="./app">開 App</a></p>
+  <p class="siblings">姊妹產品：
+    <a href="https://moneyrate.dawnstudio.app">MoneyRate 匯率</a> ·
+    <a href="https://openmusic.dawnstudio.app">OpenMusic</a> ·
+    <a href="./tour">OneSpends 產品導覽</a> ·
+    <a href="./guides">OneSpends 匯入教學</a> ·
+    <a href="./value">OneSpends 你得到啲乜</a>
+  </p>
+</footer>
+<script>
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "817449396b37448986f55bee8a07929f"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

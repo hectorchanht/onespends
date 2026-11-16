@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://onespends.dawnstudio.app/sitemap.xml

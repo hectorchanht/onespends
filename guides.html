@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>匯入教學 — OneSpends</title>
+<meta name="description" content="點樣將 Buyee、Jauce 等購物平台同銀行 app 嘅消費記錄匯入 OneSpends：CSV、JSON、HTML 三種檔案都得，全部喺你部裝置解析，唔上載去任何 server。">
+<link rel="canonical" href="https://onespends.dawnstudio.app/guides">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OneSpends">
+<meta property="og:title" content="匯入教學 — OneSpends">
+<meta property="og:description" content="Buyee / Jauce 訂單記錄、銀行 CSV、JSON — 點樣逐步匯入 OneSpends，全部喺你部裝置完成。">
+<meta property="og:url" content="https://onespends.dawnstudio.app/guides">
+<meta property="og:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="匯入教學 — OneSpends">
+<meta name="twitter:description" content="將購物平台同銀行嘅消費記錄匯入 OneSpends：CSV / JSON / HTML 都得，本機解析，唔上載。">
+<meta name="twitter:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="theme-color" content="#14532d">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./styles.css?v=23">
+</head>
+<body class="guides-page">
+<header class="site-header">
+  <a class="brand" href="./">
+    <img src="./icons/icon-192.png" alt="" width="32" height="32">
+    <span>OneSpends</span>
+  </a>
+  <nav>
+    <a href="./">主頁</a>
+    <a href="./tour">產品導覽</a>
+    <a href="./guides" aria-current="page">匯入教學</a>
+    <a href="./value">你得到啲乜</a>
+    <a href="./app" class="nav-app">開 App</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>匯入教學：將你嘅購物記錄帶入嚟</h1>
+    <p class="tagline" lang="en">All your spends in one place — just need a glance.</p>
+    <p>你啲消費記錄散喺唔同平台度，唔使逐筆手打。以下逐個平台教你點樣拎返出嚟，再匯入 OneSpends。</p>
+  </section>
+
+  <section class="card">
+    <h2>通用原則：三種檔案都食</h2>
+    <ul class="guide-list">
+      <li><strong>CSV</strong> — 銀行、信用卡、支付 app 匯出嘅明細表。</li>
+      <li><strong>JSON</strong> — 有啲工具／平台俾嘅訂單資料檔。</li>
+      <li><strong>HTML</strong> — 平台冇匯出功能嗰陣，將訂單記錄頁面成個存落嚟就得（下面 Buyee、Jauce 就係咁做）。</li>
+    </ul>
+    <p>三種檔案都係<strong>喺你部裝置嘅瀏覽器入面解析</strong>，檔案唔會上載去任何 server。匯入嗰陣，OneSpends 會按「日期 + 金額 + 商戶」跳過重複記錄，匯完會話你知新增咗幾多筆、跳過咗幾多筆。</p>
+    <p>如果檔案入面冇寫明貨幣，匯入之前可以喺 App 撳 ⬆ 匯入，喺「匯入貨幣」度揀定（例如日本平台揀 JPY）；揀「自動」嘅話，HTML 匯入預設當日圓，CSV / JSON 預設當港幣。</p>
+  </section>
+
+  <section class="card">
+    <h2>Buyee：訂單記錄點匯入</h2>
+    <ol class="guide-steps">
+      <li>用<strong>電腦瀏覽器</strong>登入 Buyee，去 <strong>My Page → Order History（購入履歴）</strong>。</li>
+      <li>喺訂單記錄頁面撳 <strong>Ctrl+S</strong>（Mac 係 <strong>Cmd+S</strong>），將成個網頁<strong>另存為 HTML 檔</strong>（儲存格式揀「網頁」嗰種就得）。</li>
+      <li>如果記錄有<strong>分頁</strong>，逐頁開、逐頁重複上一步存檔 — 一頁一個 HTML 檔。</li>
+      <li>返嚟 OneSpends 主頁，撳「<strong>⬆ 匯入檔案</strong>」，揀返啱啱存落嚟嘅 .html 檔（有幾多個分頁檔就匯入幾多次）。</li>
+      <li>匯入之前，將「匯入貨幣」揀做 <strong>JPY</strong>（或者用「自動」，HTML 預設都係日圓）。</li>
+      <li>睇下匯入結果訊息，再去 dashboard 核對金額同商品名。</li>
+    </ol>
+    <p class="note">老實講：Buyee 冇提供一鍵將訂單記錄匯出做 CSV / JSON 嘅掣，所以先要用「儲存網頁」呢招。頁面上面嘅金額係日圓。</p>
+  </section>
+
+  <section class="card">
+    <h2>Jauce：訂單記錄點匯入</h2>
+    <ol class="guide-steps">
+      <li>用<strong>電腦瀏覽器</strong>登入 Jauce，去 <strong>My Account</strong> 入面嘅 order / won history（你買過、落札成功嘅記錄頁）。</li>
+      <li>喺記錄頁面撳 <strong>Ctrl+S</strong>（Mac 係 <strong>Cmd+S</strong>），將成個網頁<strong>另存為 HTML 檔</strong>。</li>
+      <li>如果記錄有<strong>分頁</strong>，逐頁開、逐頁重複上一步存檔。</li>
+      <li>返嚟 OneSpends 主頁，撳「<strong>⬆ 匯入檔案</strong>」，揀返個 .html 檔。</li>
+      <li>匯入之前，將「匯入貨幣」揀做 <strong>JPY</strong>（或者用「自動」，HTML 預設都係日圓）。</li>
+      <li>睇下匯入結果訊息，再去 dashboard 核對 — OneSpends 會認頁面表格入面嘅日付、商品名同落札価格。</li>
+    </ol>
+    <p class="note">老實講：Jauce 一樣冇一鍵匯出訂單記錄做 CSV / JSON 嘅掣，所以要用「儲存網頁」呢招。頁面上面嘅金額係日圓。</p>
+  </section>
+
+  <section class="card">
+    <h2>其他平台：有 CSV / JSON 就直接匯入</h2>
+    <p>銀行、信用卡或者支付 app 如果有「匯出 CSV」「下載明細」之類嘅功能，匯出完直接喺 OneSpends 主頁撳「⬆ 匯入檔案」揀個檔就得，唔使改任何嘢。OneSpends 認以下欄位（中文、英文、日文 header 都認）：</p>
+    <ul class="guide-list">
+      <li><strong>日期</strong>：日期 / date / 日付</li>
+      <li><strong>金額</strong>：金額 / amount / 価格 / 合計 / 落札価格</li>
+      <li><strong>商戶</strong>：商戶 / vendor / 商品 / 商品名 / description</li>
+      <li><strong>幣別</strong>：幣別 / currency / 通貨（寫 ¥ 或 円 會當日圓、HK$ 當港幣、NT$ 當台幣、US$ 當美金）</li>
+    </ul>
+    <p>JSON 檔都一樣：一個訂單一個 object，欄位名用上面嗰啲（或者 orderDate、price、title 呢啲常見名）就認到；成個檔係一個 array，或者用 orders / items / results 包住個 array 都得。</p>
+  </section>
+
+  <section class="card">
+    <h2>如果個平台完全冇得匯出？</h2>
+    <p>仲有最後一招：影相。訂單確認電郵、收貨單、紙本收據，影低用 OneSpends 嘅收據 OCR 入數，一樣喺你部機完成。點做睇 <a href="./tour">產品導覽</a> 第 2 步「影一張相」。</p>
+    <p><a class="btn primary" href="./app">開 App 開始匯入</a></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><strong>OneSpends</strong> by <a href="https://dawnstudio.app">Dawn Studio</a> · <a href="./app">開 App</a></p>
+  <p class="siblings">姊妹產品：
+    <a href="https://moneyrate.dawnstudio.app">MoneyRate 匯率</a> ·
+    <a href="https://openmusic.dawnstudio.app">OpenMusic</a> ·
+    <a href="./tour">OneSpends 產品導覽</a> ·
+    <a href="./guides">OneSpends 匯入教學</a> ·
+    <a href="./value">OneSpends 你得到啲乜</a>
+  </p>
+</footer>
+<script>
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "817449396b37448986f55bee8a07929f"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

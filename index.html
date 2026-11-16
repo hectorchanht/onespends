@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OneSpends — All your spends in one place — just need a glance.</title>
+<meta name="description" content="OneSpends — All your spends in one place — just need a glance. 影低收據即刻 OCR 入數（喺你部機完成，唔上傳）、手動記帳、CSV 匯入匯出，多幣分開計；唔使開帳戶，登入後可同步去你嘅帳戶。">
+<link rel="canonical" href="https://onespends.dawnstudio.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OneSpends">
+<meta property="og:title" content="OneSpends — All your spends in one place — just need a glance.">
+<meta property="og:description" content="All your spends in one place — just need a glance. 影收據 OCR 入數、多幣分開計、資料預設留喺你部機，登入可同步。">
+<meta property="og:url" content="https://onespends.dawnstudio.app/">
+<meta property="og:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OneSpends — All your spends in one place — just need a glance.">
+<meta name="twitter:description" content="All your spends in one place — just need a glance. 影收據 OCR 入數、多幣分開計、資料預設留喺你部機，登入可同步。">
+<meta name="twitter:image" content="https://onespends.dawnstudio.app/icons/icon-512.png">
+<meta name="theme-color" content="#14532d">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./styles.css?v=23">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./">
+    <img src="./icons/icon-192.png" alt="" width="32" height="32">
+    <span>OneSpends</span>
+  </a>
+  <nav>
+    <a href="./" aria-current="page">主頁</a>
+    <a href="./tour">產品導覽</a>
+    <a href="./guides">匯入教學</a>
+    <a href="./value">你得到啲乜</a>
+    <a href="./app" class="nav-app">開 App</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero landing-hero">
+    <h1>一個地方，睇晒你所有使費</h1>
+    <p class="tagline" lang="en">All your spends in one place — just need a glance.</p>
+    <p>影低收據，喺你部機即刻 OCR 入數；唔想影，手動加又得，CSV / JSON / HTML 檔案匯入又得。多幣分開計，唔會溝埋一齊呃你。資料預設只存喺你部裝置；開帳戶登入之後，先會同步去你嘅帳戶，方便換機。</p>
+    <div class="actions">
+      <a class="btn primary cta-app" href="./app">開 App →</a>
+      <a class="btn" href="./app?demo=1">睇示範數據</a>
+      <a class="btn ghost" href="./tour">產品導覽</a>
+    </div>
+  </section>
+
+  <section class="landing-features" aria-label="功能">
+    <div class="card feature"><span class="feature-icon" aria-hidden="true">📷</span><h2>影收據入數</h2><p>OCR 喺你部機行，讀完預填等你核對，唔會自動入數。</p></div>
+    <div class="card feature"><span class="feature-icon" aria-hidden="true">💱</span><h2>多幣分開計</h2><p>HKD、USD、CAD、JPY… 每隻貨幣各自一個總額，同上月比較。</p></div>
+    <div class="card feature"><span class="feature-icon" aria-hidden="true">⬆</span><h2>匯入 / 匯出</h2><p>CSV / JSON / HTML 匯入會自動跳過重複；隨時匯出 CSV 備份。<a href="./guides">睇匯入教學</a></p></div>
+  </section>
+
+  <section class="card privacy">
+    <h2>私隱講清楚</h2>
+    <p>預設唔使帳戶：你啲使費記錄全部只留喺呢部裝置嘅瀏覽器儲存入面。OCR 喺你部機行，收據相唔會傳去任何地方。如果你開帳戶登入，記錄會同步去你自己嘅帳戶方便換機 — 同步與唔同步，由你話事，登出唔會刪走本機記錄。幾時都仲可以匯出 CSV 備份。</p>
+  </section>
+
+  <section class="card tour-cta">
+    <h2>準備好？</h2>
+    <a class="btn primary cta-app" href="./app">開 App →</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><strong>OneSpends</strong> by <a href="https://dawnstudio.app">Dawn Studio</a> · <a href="./app">開 App</a></p>
+  <p class="siblings">姊妹產品：
+    <a href="https://moneyrate.dawnstudio.app">MoneyRate 匯率</a> ·
+    <a href="https://openmusic.dawnstudio.app">OpenMusic</a> ·
+    <a href="./tour">OneSpends 產品導覽</a> ·
+    <a href="./guides">OneSpends 匯入教學</a> ·
+    <a href="./value">OneSpends 你得到啲乜</a>
+  </p>
+</footer>
+<script>
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "817449396b37448986f55bee8a07929f"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

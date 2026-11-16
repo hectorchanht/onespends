@@ -1,0 +1,30 @@
+// OneSpends — FICTIONAL demo data for /app?demo=1 (design preview only).
+// Every shop name and amount here is invented. Shape matches a stored spend record.
+// Dates are rebased by js/seed.js so the newest record lands on "today".
+export const SEED_SPENDS = [
+  { vendor: "Lumen Cloud 雲端", amount: 7.5, currency: "USD", date: "2026-10-02", category: "訂閱", note: "示範：每月方案" },
+  { vendor: "Pixel Notes Pro", amount: 3.99, currency: "USD", date: "2026-10-05", category: "訂閱", note: "" },
+  { vendor: "StreamBox 串流", amount: 88, currency: "HKD", date: "2026-10-03", category: "訂閱", note: "示範" },
+  { vendor: "港灣麵家", amount: 62, currency: "HKD", date: "2026-10-18", category: "餐飲", note: "" },
+  { vendor: "綠洲茶餐廳", amount: 48.5, currency: "HKD", date: "2026-10-21", category: "餐飲", note: "" },
+  { vendor: "晨光烘焙坊", amount: 36, currency: "HKD", date: "2026-10-23", category: "餐飲", note: "" },
+  { vendor: "星砂文具", amount: 129, currency: "HKD", date: "2026-10-14", category: "購物", note: "" },
+  { vendor: "Pinewood 小巴", amount: 11.8, currency: "HKD", date: "2026-10-22", category: "交通", note: "" },
+  { vendor: "Pinewood 小巴", amount: 11.8, currency: "HKD", date: "2026-10-24", category: "交通", note: "" },
+  { vendor: "Northwind Books", amount: 42.75, currency: "CAD", date: "2026-10-08", category: "購物", note: "" },
+  { vendor: "Maple Lantern Diner", amount: 31.2, currency: "CAD", date: "2026-10-13", category: "餐飲", note: "" },
+  { vendor: "Prairie Fresh Grocer", amount: 58.4, currency: "CAD", date: "2026-10-20", category: "餐飲", note: "" },
+  { vendor: "Aurora Transit Pass", amount: 25, currency: "CAD", date: "2026-10-01", category: "交通", note: "" },
+  { vendor: "雲マート Kumo Mart", amount: 4280, currency: "JPY", date: "2026-10-11", category: "購物", note: "示範" },
+  { vendor: "さくら Hobby Box", amount: 6900, currency: "JPY", date: "2026-10-17", category: "購物", note: "" },
+  { vendor: "Kitsune Ramen", amount: 1150, currency: "JPY", date: "2026-10-19", category: "餐飲", note: "" },
+  { vendor: "ほし Konbini", amount: 680, currency: "JPY", date: "2026-10-21", category: "餐飲", note: "" },
+  { vendor: "Yuki Line 電車", amount: 420, currency: "JPY", date: "2026-10-22", category: "交通", note: "" },
+  { vendor: "ほし Konbini", amount: 1420, currency: "JPY", date: "2026-10-24", category: "餐飲", note: "" },
+  { vendor: "Lumen Cloud 雲端", amount: 7.5, currency: "USD", date: "2026-09-02", category: "訂閱", note: "示範：每月方案" },
+  { vendor: "StreamBox 串流", amount: 88, currency: "HKD", date: "2026-09-03", category: "訂閱", note: "示範" },
+  { vendor: "港灣麵家", amount: 74, currency: "HKD", date: "2026-09-16", category: "餐飲", note: "" },
+  { vendor: "星砂文具", amount: 215, currency: "HKD", date: "2026-09-27", category: "購物", note: "" },
+  { vendor: "Northwind Books", amount: 19.99, currency: "CAD", date: "2026-09-21", category: "購物", note: "" },
+  { vendor: "雲マート Kumo Mart", amount: 3150, currency: "JPY", date: "2026-09-24", category: "購物", note: "" },
+];
