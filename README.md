@@ -12,3 +12,9 @@ Local-first receipt OCR → dashboard. Live at https://onespends.dawnstudio.app
 ## Deploy
 
 Cloudflare Pages direct upload for the site + the Worker deploy script for the backend. Pushing this repo does **not** auto-deploy the live site.
+
+## Licence
+
+This software is licensed under the PolyForm Noncommercial License 1.0.0 - see [LICENSE](LICENSE).
+
+Commercial or business use of this software requires the prior written acknowledgement of Dawn Studio.
