@@ -121,9 +121,9 @@ function renderGlance(thisMonth, cur, prev) {
       <div class="gc-amt">0</div>
       <div class="gc-sub">未有記錄</div>
       <div class="gc-actions">
-        <button type="button" class="gc-btn" data-act="scan">📷 影收據</button>
-        <button type="button" class="gc-btn" data-act="add">＋ 加一筆</button>
-        <button type="button" class="gc-btn" data-act="import">⬆ 匯入檔案</button>
+        <button type="button" class="gc-btn" data-act="scan" aria-label="影收據" title="影收據"><span aria-hidden="true">📷</span></button>
+        <button type="button" class="gc-btn" data-act="add" aria-label="加一筆" title="加一筆"><span aria-hidden="true">＋</span></button>
+        <button type="button" class="gc-btn" data-act="import" aria-label="匯入檔案" title="匯入檔案"><span aria-hidden="true">⬆</span></button>
       </div>
       <a class="gc-demo" href="./app?demo=1">睇示範數據 →</a>
     </article>`;
@@ -190,7 +190,11 @@ function renderList() {
   const recent = showAllRecent ? spends : spends.slice(0, RECENT_LIMIT);
   const more = $("#moreRecent");
   more.hidden = spends.length <= RECENT_LIMIT;
-  more.textContent = showAllRecent ? "收起" : `全部 ${spends.length}`;
+  more.innerHTML = showAllRecent
+    ? `<span aria-hidden="true">▴</span>`
+    : `<span aria-hidden="true">▾</span> ${spends.length}`;
+  more.setAttribute("aria-label", showAllRecent ? "收起" : `顯示全部 ${spends.length} 筆`);
+  more.title = showAllRecent ? "收起" : "顯示全部";
   if (!recent.length) {
     el.innerHTML = `<li class="empty-row"><span aria-hidden="true">🧾</span> 未有記錄 <button type="button" class="link-btn" data-act="add-first">＋ 加第一筆</button></li>`;
     return;
@@ -309,7 +313,8 @@ function resetForm() {
   $("#category").value = "未分類";
   $("#currency").value = "HKD";
   $("#formTitle").textContent = "＋ 加一筆";
-  $("#submitBtn").textContent = "儲存";
+  $("#submitBtn").setAttribute("aria-label", "儲存");
+  $("#submitBtn").title = "儲存";
   $("#cancelEdit").hidden = true;
   $("#deleteBtn").hidden = true;
 }
@@ -331,7 +336,8 @@ function openEdit(rec) {
   $("#category").value = rec.category;
   $("#note").value = rec.note || "";
   $("#formTitle").textContent = "✎ 編輯";
-  $("#submitBtn").textContent = "更新";
+  $("#submitBtn").setAttribute("aria-label", "更新");
+  $("#submitBtn").title = "更新";
   $("#cancelEdit").hidden = false;
   $("#deleteBtn").hidden = false;
   openDialog(spendDialog);
@@ -461,7 +467,9 @@ const AUTH_ERROR_TEXT = {
 function renderAccount() {
   const { account, status } = sync.getState();
   $("#accountBtn").classList.toggle("is-in", !!account);
-  $("#accountBtnLabel").textContent = account ? account.email.split("@")[0] : "登入";
+  const accountName = account ? `帳戶 · ${account.email}` : "帳戶 · 登入";
+  $("#accountBtn").setAttribute("aria-label", accountName);
+  $("#accountBtn").title = accountName;
   $("#accountSignedOut").hidden = !!account;
   $("#accountSignedIn").hidden = !account;
   if (account) {

@@ -7,7 +7,7 @@
 // change only by path/content, not by app release. HTML entries also
 // reference local css/js with a ?v=N query so a stale HTTP cache can
 // never pin an old entry file to an old module graph.
-const CACHE = "onespends-v24";
+const CACHE = "onespends-v25";
 const SHELL = [
   "./",
   "./index.html",
@@ -20,10 +20,10 @@ const SHELL = [
   "./guides.html",
   "./styles.css?v=23",
   "./vendor/driver.css?v=23",
-  "./app.css?v=24",
+  "./app.css?v=25",
   "./manifest.webmanifest",
   "./favicon.svg",
-  "./js/app.js?v=24",
+  "./js/app.js?v=25",
   "./vendor/driver.js?v=23",
   "./js/tour.js?v=24",
   "./js/db.js",

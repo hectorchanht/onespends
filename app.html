@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <link rel="stylesheet" href="./styles.css?v=23">
 <link rel="stylesheet" href="./vendor/driver.css?v=23">
-<link rel="stylesheet" href="./app.css?v=24">
+<link rel="stylesheet" href="./app.css?v=25">
 </head>
 <body class="app-page">
 <script>
@@ -102,9 +102,9 @@
     <button type="button" id="scanButton" class="scan-fab" title="掃收據" aria-label="📷 掃收據入數">📷</button>
     <input type="file" id="receiptFile" accept="image/*" capture="environment" hidden>
   </nav>
-  <button type="button" class="icon-btn tour-btn" data-tour-start title="Take the tour" aria-label="導覽 · Take the tour">？<span class="tour-btn-label">導覽</span></button>
-  <button type="button" class="icon-btn account-btn" id="accountBtn" title="帳戶" aria-label="👤 帳戶">👤<span class="tour-btn-label" id="accountBtnLabel">登入</span></button>
-  <button type="button" class="icon-btn settings-btn" id="settingsBtn" title="設定" aria-label="⚙ 設定">⚙<span class="tour-btn-label">設定</span></button>
+  <button type="button" class="icon-btn tour-btn" data-tour-start title="導覽 · Take the tour" aria-label="導覽 · Take the tour">？</button>
+  <button type="button" class="icon-btn account-btn" id="accountBtn" title="帳戶 · 登入" aria-label="帳戶 · 登入">👤</button>
+  <button type="button" class="icon-btn settings-btn" id="settingsBtn" title="設定" aria-label="設定">⚙</button>
 </header>
 
 <div id="trialBanner" class="trial-banner" hidden>☁️ 雲端同步嘅免費試用已完，同步已暫停。你嘅記錄仍然安全存喺呢部裝置，唔受影響。</div>
@@ -234,9 +234,9 @@
         </label>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn primary" id="submitBtn">儲存</button>
-        <button type="button" class="btn ghost" id="cancelEdit" hidden>取消</button>
-        <button type="button" class="btn ghost danger" id="deleteBtn" hidden>🗑 刪除</button>
+        <button type="submit" class="btn primary" id="submitBtn" aria-label="儲存" title="儲存"><span aria-hidden="true">✓</span></button>
+        <button type="button" class="btn ghost" id="cancelEdit" aria-label="取消" title="取消" hidden><span aria-hidden="true">✕</span></button>
+        <button type="button" class="btn ghost danger" id="deleteBtn" aria-label="刪除" title="刪除" hidden><span aria-hidden="true">🗑</span></button>
       </div>
     </form>
     <div class="pp-retry" id="ppRetryWrap" hidden>
@@ -264,7 +264,7 @@
       </select>
     </label>
     <span class="hint">CSV · JSON · HTML</span>
-    <label class="btn primary file-pick" for="csvFile" role="button" tabindex="0">揀檔案</label>
+    <label class="btn primary file-pick" for="csvFile" role="button" tabindex="0" aria-label="揀檔案" title="揀檔案"><span aria-hidden="true">⬆</span></label>
     <input type="file" id="csvFile" accept=".csv,.json,.html,.htm,text/csv,application/json,text/html" hidden>
     <a class="hint" href="./guides">匯入教學 ↗</a>
   </div>
@@ -299,8 +299,8 @@
       <p class="account-line" id="accountPlanText"></p>
       <p class="account-line">同步狀態：<span id="syncStatusText"></span></p>
       <div class="form-actions">
-        <button type="button" class="btn primary" id="syncNowBtn">立即同步</button>
-        <button type="button" class="btn ghost" id="logoutBtn">登出</button>
+        <button type="button" class="btn primary" id="syncNowBtn" aria-label="立即同步" title="立即同步"><span aria-hidden="true">🔄</span></button>
+        <button type="button" class="btn ghost" id="logoutBtn" aria-label="登出" title="登出"><span aria-hidden="true">🚪</span></button>
       </div>
       <p class="hint">登出唔會刪走呢部裝置上面嘅記錄 — 只係停咗雲端同步。</p>
     </div>
@@ -351,7 +351,7 @@
   </div>
 </dialog>
 
-<script type="module" src="./js/app.js?v=24"></script>
+<script type="module" src="./js/app.js?v=25"></script>
 <script defer src="./vendor/driver.js?v=23"></script>
 <script defer src="./js/tour.js?v=24"></script>
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "817449396b37448986f55bee8a07929f"}'></script><!-- End Cloudflare Web Analytics -->
